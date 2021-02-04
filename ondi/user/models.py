@@ -29,9 +29,9 @@ class Report(models.Model):
 
 class Favorite(models.Model):
   class Meta:
-    unique_together = ('from_user', 'to_user',)
+    unique_together = ('from_user',)
   from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_from_user')
-  to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_to_user')
+  # item
 
 class Notification(models.Model):
   to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_to_user')
