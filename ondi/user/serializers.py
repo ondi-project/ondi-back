@@ -6,7 +6,20 @@ from .models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'password', 'phone']
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'groups',
+            'user_permissions',
+            'is_staff',
+            'is_active',
+            'is_superuser',
+            'last_login',
+            'date_joined',
+            'phone',
+        ]
 
 class UserRegisterSerializer(RegisterSerializer):
     phone = serializers.CharField(max_length=11)

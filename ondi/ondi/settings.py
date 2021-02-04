@@ -133,6 +133,10 @@ REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'user.serializers.UserSerializer',
 }
 
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'user.serializers.UserRegisterSerializer',
+}
+
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 SITE_ID = 1
 
@@ -141,7 +145,13 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-REST_AUTH_REGISTER_SERIALIZERS = {
-    'REGISTER_SERIALIZER': 'user.serializers.UserRegisterSerializer',
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    )
 }
 
+REST_USE_JWT = True
+
+JWT_AUTH_COOKIE = 'ondi-auth'
