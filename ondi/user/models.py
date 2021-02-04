@@ -33,6 +33,10 @@ class Favorite(models.Model):
   from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_from_user')
   to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_to_user')
 
+class Notification(models.Model):
+  to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_to_user')
+  message = models.TextField()
+
 '''
 class Like(models.Model):
     user

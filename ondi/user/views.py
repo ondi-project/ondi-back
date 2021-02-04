@@ -1,8 +1,8 @@
 from django.shortcuts import render
+from rest_framework import generics
+from .models import User
+from .serializers import UserSerializer
 
-# Create your views here.
-from django.http import HttpResponse
-
-
-def user(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+class UserListCreate(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
