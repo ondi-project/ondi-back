@@ -46,13 +46,13 @@ def post(request):
         image = request.FILES['p_image']
         # request.GET.get('')
         req = json.loads(request.body.decode('utf-8'))
-        category = req['p_category']
-        name = req['p_name']
-        price = req['p_price']
-        content = req['p_content']
-        tag = req['p_tag'] #리스트형식
-        nego = req['p_nego'] #True ,False형태로
-        seller_id = req['p_seller'] #전화번호로 ?아마
+        category = request.POST.get('p_category',None)
+        name = request.POST.get('p_name',None)
+        price = request.POST.get('p_price',None)
+        content = request.POST.get('p_content',None)
+        tag = request.POST.get('p_tag',None) #리스트형식
+        nego = request.POST.get('p_nego',None) #True ,False형태로
+        seller_id = request.POST.get('p_seller',None) #전화번호로 ?아마
         seller = User.objects.get(name=seller_id)
 
         if req != "None":
