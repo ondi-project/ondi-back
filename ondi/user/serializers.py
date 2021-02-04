@@ -32,6 +32,15 @@ class UserRegisterSerializer(RegisterSerializer):
         user.save()
         return user
 
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = [
+            'id',
+            'to_user',
+            'message',
+        ]
+
 class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
@@ -39,5 +48,6 @@ class ReportSerializer(serializers.ModelSerializer):
             'id',
             'from_user',
             'to_user',
+            'content',
         ]
         read_only_fields = ['from_user',]
