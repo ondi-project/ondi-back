@@ -1,6 +1,44 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator
+from django.core.validators import MinLengthValidator
+from django.core.validators import MinValueValidator
 
 # Create your models here.
-class User(models.Model):
-    question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
+class User(AbstractUser):
+   phone = models.CharField(max_length=11, validators=[MinLengthValidator(11)])
+
+class Score(models.Model):
+  class Meta:
+    unique_together = ('from_user', 'to_user',)
+
+  from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_from_user')
+  to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_to_user')
+  score = models.IntegerField(
+    validators=[
+      MaxValueValidator(100),
+      MinValueValidator(1)
+    ]
+  )
+
+class Report(models.Model):
+  class Meta:
+    unique_together = ('from_user', 'to_user',)
+  from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_from_user')
+  to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_to_user')
+
+class Favorite(models.Model):
+  class Meta:
+    unique_together = ('from_user', 'to_user',)
+  from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_from_user')
+  to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_to_user')
+
+'''
+class Like(models.Model):
+    user
+    item
+
+class Purchased(models.Model):
+    user
+    item
+'''
