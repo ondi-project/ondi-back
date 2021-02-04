@@ -4,7 +4,6 @@ from django.core.validators import MaxValueValidator
 from django.core.validators import MinLengthValidator
 from django.core.validators import MinValueValidator
 
-# Create your models here.
 class User(AbstractUser):
    phone = models.CharField(max_length=11, validators=[MinLengthValidator(11)])
 
