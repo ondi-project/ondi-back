@@ -14,14 +14,8 @@ import simplejson
 from django.template.defaulttags import register
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-
 from django.core.serializers.json import DjangoJSONEncoder
-
-class LazyEncoder(DjangoJSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, YourCustomType):
-            return str(obj)
-        return super().default(obj)
+import json
 
 #Main화면 : 상품들 최신순으로 보여짐
 @method_decorator(csrf_exempt,name='dispatch')
@@ -38,9 +32,9 @@ def livelist(request):
 #상품등록화면 : {'p_category':--,'p_name',p_price,p_content,p_image,p_tag,p_nego,p_date,p_likecount,p_seller,p_live}
 @method_decorator(csrf_exempt,name='dispatch')
 def post(request):
-    if request.method == "GET":
-        print('get')
-        return HttpResponse(simplejson.dumps({"response": "GET"}))
+    # if request.method == "GET":
+    #     print('get')
+    #     return HttpResponse(simplejson.dumps({"response": "GET"}))
     if request.method == "POST":
         print('post')
         image = request.FILES['p_image']
@@ -72,11 +66,20 @@ def view_product(request):
     if request.method == "GET":
         # 특정상품보여주기!
         product_id = request.GET.get('p_id')
+        ##########없애줘야힘
         if product_id ==None:
             product_id =1
-        product = Product.objects.filter(id=product_id)
-        a={'product':product[0]}
-        print(product[0].p_name)
+        ####################
+        #조회수올리기
+        product = Product.objects.get(id=product_id)
+        before_value = product.p_viewcount
+        after =(int(before_value) + 1)
+        product.p_viewcount = (after)
+        product.save()
+        #상품보내주기
+        final_product = Product.objects.filter(id=product_id)
+        a={'product':final_product[0]}
+        print( a['product'].p_seller.id)
         #확인되야함!! json으로 잘갔는지!!
         return HttpResponse(a)
 
@@ -86,15 +89,16 @@ def view_product(request):
         live=request.POST.get('p_live',None)  #없으면 OFF #신청하면 READY #해당시각이면 ON
         #라이브 방송한다고하면!!!
         if live =='READY':
-            product_id = request.POST.get('p_id',None)
-            live_time = request.POST.get('l_date',None)
+            product_id = request.POST.get('p_id',None) #상품정보
+            live_time = request.POST.get('l_date',None) #라이브시간
+            live_price = request.POST.get('l_sprice',None) #라이브시작 가격
             #해당 Product에 p_live 변수 업데이트 & LiveProduct DB 생성
             #p_live 변수 변경
             product = Product.objects.get(id=product_id)
             product.p_live= live #live "None" --->"Ready"로 수정
             product.save()
             #LiveProduct DB 생성
-            liveposter = LiveProduct(l_date =live_time, l_product = product)
+            liveposter = LiveProduct(l_date =live_time, l_product = product,l_sprice = live_price)
             liveposter.save()
             print("POST 데이터를 정상적으로 입력받았습니다")
             return HttpResponse(simplejson.dumps({"response": "Good"}))

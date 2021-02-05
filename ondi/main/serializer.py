@@ -6,7 +6,7 @@ from .models import *
 class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id','p_name', 'p_price','p_image','p_date','p_likecount')
+        fields = '__all__'        # fields = ('id','p_name', 'p_price','p_image','p_date','p_likecount','p_viewcount')
 class ProductListView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductListSerializer
@@ -25,12 +25,13 @@ class ProductListView(generics.ListAPIView):
 
     #카테고리별 : 함수짜놓기...
 
+
 #LiveList에서 보여지는것
 class LiveListSerializer(serializers.ModelSerializer):
     l_product =ProductListSerializer(read_only =True)
     class Meta:
         model = LiveProduct
-        fields = ('id','l_date', 'l_product')
+        fields = ('id','l_date', 'l_product','l_sprice')
 class LiveListView(generics.ListAPIView):
     queryset = LiveProduct.objects.all()
     serializer_class = LiveListSerializer
@@ -48,4 +49,7 @@ class LiveListView(generics.ListAPIView):
         return Response(sorted_serializer_data)
 
     #카테고리별 : 함수짜놓기...
+
+
+
 
