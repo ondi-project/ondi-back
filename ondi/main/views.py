@@ -38,7 +38,7 @@ def category(request):
         #############삭제해야함###########3
         if product_category ==None:
             product_category='의류'
-        if product_view_option ==None:
+        if product_view_option ==None or product_view_option =='p_keyword':
             product_view_option ='p_likecount'
         ###############
         # #카테고리정보를 받으면
