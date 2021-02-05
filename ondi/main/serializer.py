@@ -7,7 +7,7 @@ from django.db.models import Q
 class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id','p_name', 'p_price','p_image','p_date','p_viewcount','p_likecount') #로그인한 내가 좋아한지여부 추가해줘야함!
+        fields = ('id','p_name', 'p_price','p_image','p_date','p_viewcount','p_likecount','p_tag') #로그인한 내가 좋아한지여부 추가해줘야함!
 class ProductListView(generics.ListAPIView):
     queryset = Product.objects.filter(p_buy = False)
     serializer_class = ProductListSerializer
