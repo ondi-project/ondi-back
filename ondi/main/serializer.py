@@ -15,11 +15,19 @@ class ProductSerializer(serializers.ModelSerializer):
         request = self.context.get('request', None)
         if request:
             user = request.user
+            print(user.id)
             try:
-                return True
-            except Like.DoesNotExist:
+                print('like')
+                queryset = Like.objects.filter(from_user=user, product=product)
+                print('hihi')
+                print(queryset[0])
+                print('hello')
+                if queryset[0]:
+                    print('true')
+                    return True
+            except :
                 return False
-        return False
+        return  False
     
 #Main에서 보여지는 것.#최신순
 class ProductListSerializer(serializers.ModelSerializer):
