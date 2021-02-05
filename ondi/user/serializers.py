@@ -20,6 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
             'last_login',
             'date_joined',
             'phone',
+            'image',
         ]
 
 class UserRegisterSerializer(RegisterSerializer):

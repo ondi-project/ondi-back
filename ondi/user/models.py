@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator
 
 class User(AbstractUser):
    phone = models.CharField(max_length=11, validators=[MinLengthValidator(11)])
+   image = models.ImageField(null=True)
 
 class Score(models.Model):
   class Meta:
