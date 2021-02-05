@@ -17,6 +17,7 @@ class ProductListCreateView(generics.ListCreateAPIView):
             products = products.filter(category_id=category)
         if name:
             products = products.filter(name__icontains=name)
+        products = products.order_by('-created_at')
         return products
 
     def perform_create(self, serializer):
