@@ -3,10 +3,20 @@ from rest_framework import generics
 from rest_framework.response import Response
 from .models import *
 from .serializers import *
+from main.serializers import *
 
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class UserRetrieveView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserSellingListView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    def get_queryset(self):
+       return Product.objects.filter(p_seller=self.kwargs.get('pk'))
 
 class ReportListCreateView(generics.ListCreateAPIView):
     queryset = Report.objects.all()
