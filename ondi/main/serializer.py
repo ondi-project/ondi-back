@@ -23,9 +23,9 @@ class ProductListView(generics.ListAPIView):
             return self.get_paginated_response(sorted_serializer_data)
         return Response(sorted_serializer_data)
 
-#카테고리별 : 함수짜놓기...
+#카테고리별 (카테고리, 조회option 입력받아야함)
 class CategoryListView(generics.ListAPIView):
-    queryset = LiveProduct.objects.all()
+    queryset = Product.objects.all()
     serializer_class = ProductListSerializer
     def list(self, request, category, view_option):
         # 'p_keyword' 'p_likecount' 'p_viewcount' 'p_date'
@@ -48,6 +48,25 @@ class CategoryListView(generics.ListAPIView):
             sorted_serializer_data = sorted(serializer.data, key=lambda x: x[option], reverse=True)
             return self.get_paginated_response(sorted_serializer_data)
         return Response(sorted_serializer_data)
+
+#검색화면 (검색어 입력받아야함)
+class SearchListView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductListSerializer
+    def list(self, request, product_search):
+        self.queryset = Product.objects.filter(p_tag__contains = product_search)
+        queryset = self.get_queryset()
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(queryset, many=True)
+        sorted_serializer_data = sorted(serializer.data, key=lambda x: x['p_date'], reverse=True)
+        page = self.paginate_queryset(queryset)
+        print("Product Work", page)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            sorted_serializer_data = sorted(serializer.data, key=lambda x: x['p_date'], reverse=True)
+            return self.get_paginated_response(sorted_serializer_data)
+        return Response(sorted_serializer_data)
+
 
 #LiveList에서 보여지는것
 class LiveListSerializer(serializers.ModelSerializer):
