@@ -16,17 +16,12 @@ class UserRetrieveView(generics.RetrieveAPIView):
 class UserSellingListView(generics.ListAPIView):
     serializer_class = ProductSerializer
     def get_queryset(self):
-       return Product.objects.filter(p_seller=self.kwargs.get('pk'))
+       return Product.objects.filter(p_seller=self.kwargs.get('pk'), p_buy=False)
 
 class UserSoldListView(generics.ListAPIView):
     serializer_class = ProductSerializer
     def get_queryset(self):
-       return Product.objects.filter(p_seller=self.kwargs.get('pk'))
-
-class UserBoughtListView(generics.ListAPIView):
-    serializer_class = ProductSerializer
-    def get_queryset(self):
-       return Product.objects.filter(p_seller=self.kwargs.get('pk'))
+       return Product.objects.filter(p_seller=self.kwargs.get('pk'), p_buy=True)
 
 class ReportListCreateView(generics.ListCreateAPIView):
     queryset = Report.objects.all()
