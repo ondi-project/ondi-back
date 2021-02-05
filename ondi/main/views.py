@@ -96,7 +96,7 @@ def view_product(request):
         ##########없애줘야힘
         if product_id ==None:
             product_id =3
-            user_id =3
+            user_id =2
         ####################
         #조회수올리기
         product = Product.objects.get(id=product_id)
@@ -106,6 +106,7 @@ def view_product(request):
         product.save()
         # Like여부확인
         user = User.objects.get(id=user_id)
+        print(user_id)
         try: 
             like = Like.objects.filter(from_user=user, product=product)
             if like:
@@ -115,9 +116,12 @@ def view_product(request):
         #상품보내주기
         final_product = Product.objects.filter(id=product_id)
         a={'product':final_product[0], 'like':like} #해당 user가 좋아요하면 True, 아니면 False
-        print( a['product'].p_seller.id)
-        
-        #확인되야함!! json으로 잘갔는지!!
+        # 라이브버튼 띄는 여부
+        if user_id ==  a['product'].p_seller.id:
+            a['livebutton'] = True
+        else:
+            a['livebutton'] =False
+    #확인되야함!! json으로 잘갔는지!!
         return HttpResponse(a)
 
     if request.method == "POST":
