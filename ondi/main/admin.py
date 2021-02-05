@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import *
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'p_category','p_name','p_date','p_seller')
+    list_display = ('id', 'p_category','p_name','p_date','p_seller','p_tag')
     fields =()
 # admin.site.register(Product)
 @admin.register(LiveProduct)

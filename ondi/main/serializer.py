@@ -2,6 +2,7 @@ from django.contrib.auth.models import *
 from rest_framework import generics,serializers
 from rest_framework.response import Response
 from .models import *
+from django.db.models import Q
 #Main에서 보여지는 것.#최신순
 class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -54,7 +55,7 @@ class SearchListView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductListSerializer
     def list(self, request, product_search):
-        self.queryset = Product.objects.filter(p_tag__contains = product_search)
+        self.queryset = Product.objects.filter(Q(p_tag__contains = product_search)|Q(p_name__contains = product_search))
         queryset = self.get_queryset()
         serializer_class = self.get_serializer_class()
         serializer = serializer_class(queryset, many=True)

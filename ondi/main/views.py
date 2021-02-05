@@ -51,10 +51,12 @@ def search(request):
         product_search = request.GET.get('p_search')
         #############삭제해야함###########3
         if product_search ==None:
-            product_search='니트'
+            product_search='상품'
         ###############
         # 검색어를 받으면
         return SearchListView.as_view()(request,product_search)
+    
+    
 #상품등록화면 : {'p_category':--,'p_name',p_price,p_content,p_image,p_tag,p_nego,p_date,p_likecount,p_seller,p_live}
 @method_decorator(csrf_exempt,name='dispatch')
 def post(request):
