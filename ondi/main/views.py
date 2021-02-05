@@ -21,7 +21,7 @@ from rest_framework import status
 
 #Main화면 : 상품들 최신순으로 보여짐
 class ProductListCreateView(generics.ListCreateAPIView):
-    queryset = Product.objects.all().order_by('-p_date')
+    queryset = Product.objects.filter(p_buy = False).order_by('-p_date')
     serializer_class = ProductSerializer
     def perform_create(self, serializer):
         serializer.save(seller=self.request.user)

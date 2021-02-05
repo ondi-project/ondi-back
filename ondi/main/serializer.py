@@ -4,11 +4,23 @@ from rest_framework.response import Response
 from .models import *
 from django.db.models import Q
 
-class NProductListSerializer(serializers.ModelSerializer):
-    class Meta():
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
         model = Product
-        fields = ('id', 'p_name', 'p_price','p_image','p_date','p_viewcount','p_likecount','p_tag')
+        fields =  '__all__'
+        # fields = ('id','p_name', 'p_price','p_image','p_date','p_viewcount','p_likecount','p_tag') #로그인한 내가 좋아한지여부 추가해줘야함!
 
+    liked = serializers.SerializerMethodField()
+    def get_liked(self, obj):
+        request = self.context.get('request', None)
+        if request:
+            user = request.user
+            try:
+                return True
+            except Like.DoesNotExist:
+                return False
+        return False
+    
 #Main에서 보여지는 것.#최신순
 class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,7 +45,7 @@ class ProductListView(generics.ListAPIView):
 #카테고리별 (카테고리, 조회option 입력받아야함)
 class CategoryListView(generics.ListAPIView):
     queryset = Product.objects.all()
-    serializer_class = ProductListSerializer
+    serializer_class = ProductSerializer
     def list(self, request, category, view_option):
         # 'p_keyword' 'p_likecount' 'p_viewcount' 'p_date'
         if view_option == 'p_likecount':
@@ -99,22 +111,7 @@ class LiveListView(generics.ListAPIView):
 
     #카테고리별 : 함수짜놓기...
 
-class ProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields =  '__all__'
-        # fields = ('id','p_name', 'p_price','p_image','p_date','p_viewcount','p_likecount','p_tag') #로그인한 내가 좋아한지여부 추가해줘야함!
 
-    liked = serializers.SerializerMethodField()
-    def get_liked(self, obj):
-        request = self.context.get('request', None)
-        if request:
-            user = request.user
-            try:
-                return True
-            except Like.DoesNotExist:
-                return False
-        return False
 #개별product view
 class ProductView(generics.ListAPIView):
     queryset = Product.objects.all()
