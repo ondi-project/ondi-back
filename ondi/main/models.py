@@ -20,6 +20,7 @@ class Product(models.Model):
     #라이브방송여부
     p_live = models.CharField(max_length=200, verbose_name="라이브방송여부",default=0) #['예정','진행중', '0'] #라이브진행중, 라이브종료,
     p_viewcount = models.IntegerField(verbose_name="조회수", null=True, default=0)
+    p_buy = models.BooleanField(default = False, verbose_name="판매완료여부") #안팔렸으면 False, 팔렸으면 True
 class LiveProduct(models.Model):
     #일단 상품이아닌 라이브 깜짝방송 이런느낌으로#
     # {상품정보,라이브시간}

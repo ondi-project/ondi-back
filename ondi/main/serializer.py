@@ -6,9 +6,9 @@ from .models import *
 class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = '__all__'        # fields = ('id','p_name', 'p_price','p_image','p_date','p_likecount','p_viewcount')
+        fields = ('id','p_name', 'p_price','p_image','p_date','p_likecount','p_viewcount')
 class ProductListView(generics.ListAPIView):
-    queryset = Product.objects.all()
+    queryset = Product.objects.filter(p_buy = False)
     serializer_class = ProductListSerializer
     def list(self, request):
         queryset = self.get_queryset()

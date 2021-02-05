@@ -29,6 +29,14 @@ def livelist(request):
     if request.method == "GET":
         return LiveListView.as_view()(request)
 
+#카테고리화면 :
+@method_decorator(csrf_exempt,name='dispatch')
+def category(request):
+    if request.method == "GET":
+        product_id = request.GET.get('p_id')
+        #카테고리정보를 받으면
+        return ProductListView.as_view()(request)
+
 #상품등록화면 : {'p_category':--,'p_name',p_price,p_content,p_image,p_tag,p_nego,p_date,p_likecount,p_seller,p_live}
 @method_decorator(csrf_exempt,name='dispatch')
 def post(request):
