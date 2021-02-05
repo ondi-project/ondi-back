@@ -16,17 +16,12 @@ class UserRetrieveView(generics.RetrieveAPIView):
 class UserSellingListView(generics.ListAPIView):
     serializer_class = ProductSerializer
     def get_queryset(self):
-       return Product.objects.filter(p_seller=self.kwargs.get('pk'))
+        return Product.objects.filter(p_seller_id=self.kwargs.get('pk'), p_buy=False)
 
 class UserSoldListView(generics.ListAPIView):
     serializer_class = ProductSerializer
     def get_queryset(self):
-       return Product.objects.filter(p_seller=self.kwargs.get('pk'))
-
-class UserBoughtListView(generics.ListAPIView):
-    serializer_class = ProductSerializer
-    def get_queryset(self):
-       return Product.objects.filter(p_seller=self.kwargs.get('pk'))
+        return Product.objects.filter(p_seller_id=self.kwargs.get('pk'), p_buy=True)
 
 class ReportListCreateView(generics.ListCreateAPIView):
     queryset = Report.objects.all()
@@ -85,6 +80,13 @@ class LikeRetrieveDestroyView(generics.RetrieveDestroyAPIView):
 class SoldListCreateView(generics.ListCreateAPIView):
     queryset = Sold.objects.all()
     serializer_class = SoldSerializer
+
+    def post(self, request, *args, **kwargs):
+        product = Product.objects.get(pk=request.data.get('product'))
+        product.p_buy = True
+        product.save()
+        return self.create(request, *args, **kwargs)
+
     def perform_create(self, serializer):
         serializer.save(from_user=self.request.user)
 
