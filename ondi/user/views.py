@@ -36,4 +36,29 @@ class NotificationRetrieveDestroyView(generics.RetrieveDestroyAPIView):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
 
+class ScoreListCreateView(generics.ListCreateAPIView):
+    queryset = Score.objects.all()
+    serializer_class = ScoreSerializer
+    def perform_create(self, serializer):
+        serializer.save(from_user=self.request.user)
+
+class FavoriteListCreateView(generics.ListCreateAPIView):
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
+    def perform_create(self, serializer):
+        serializer.save(from_user=self.request.user)
+
+class FavoriteRetrieveDestroyView(generics.RetrieveDestroyAPIView):
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
+
+class LikeListCreateView(generics.ListCreateAPIView):
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer
+    def perform_create(self, serializer):
+        serializer.save(from_user=self.request.user)
+
+class LikeRetrieveDestroyView(generics.RetrieveDestroyAPIView):
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer
 

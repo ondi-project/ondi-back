@@ -10,4 +10,8 @@ urlpatterns = [
     path('notifications/<int:pk>', NotificationRetrieveDestroyView.as_view()),
     path('scores', ScoreListCreateView.as_view()),
     path('scores/<int:pk>', ScoreRetrieveDestroyView.as_view()),
+    path('favorites', FavoriteListCreateView.as_view()),
+    path('favorites/<int:pk>', FavoriteRetrieveDestroyView.as_view()),
+    path('likes', LikeListCreateView.as_view()),
+    path('likes/<int:pk>', LikeRetrieveDestroyView.as_view()),
 ]

@@ -33,15 +33,6 @@ class UserRegisterSerializer(RegisterSerializer):
         user.save()
         return user
 
-class NotificationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Notification
-        fields = [
-            'id',
-            'to_user',
-            'message',
-        ]
-
 class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
@@ -64,3 +55,33 @@ class ScoreSerializer(serializers.ModelSerializer):
             'comment',
         ]
         read_only_fields = ['from_user',]
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = [
+            'id',
+            'to_user',
+            'message',
+        ]
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favorite
+        fields = [
+            'id',
+            'from_user',
+            'product',
+        ]
+        read_only_fields = ['from_user',]
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = [
+            'id',
+            'from_user',
+            'product',
+        ]
+        read_only_fields = ['from_user',]
+
