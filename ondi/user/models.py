@@ -38,18 +38,18 @@ class Favorite(models.Model):
     class Meta:
         unique_together = ('from_user', 'product',)
     from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_from_user')
-    product = models.ForeignKey('main.Product', on_delete=models.CASCADE, related_name='%(class)s_product')
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE, related_name='%(class)s_product')
 
 class Like(models.Model):
     class Meta:
         unique_together = ('from_user', 'product',)
     from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_from_user')
-    product = models.ForeignKey('main.Product', on_delete=models.CASCADE, related_name='%(class)s_product')
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE, related_name='%(class)s_product')
 
 #구매
 class Sold(models.Model):
     class Meta:
         unique_together = ('from_user', 'product',)
     from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_from_user')
-    product = models.ForeignKey('main.Product', on_delete=models.CASCADE, related_name='%(class)s_product')
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE, related_name='%(class)s_product')
     price = models.IntegerField()

@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # 'main',
     'main.apps.MainConfig',
     'user.apps.UserConfig',
+    'products.apps.ProductsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
