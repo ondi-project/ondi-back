@@ -16,4 +16,6 @@ class ProductRetrieveView(generics.RetrieveAPIView):
         product = self.queryset.get(pk=kwargs.get('pk'))
         product.view_count += 1
         product.save()
+        serializer = self.get_serializer()
+        print(serializer)
         return self.retrieve(request, *args, **kwargs)
