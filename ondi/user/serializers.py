@@ -89,3 +89,5 @@ class SoldSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sold
         fields = '__all__'
+        read_only_fields = ['from_user',]
+

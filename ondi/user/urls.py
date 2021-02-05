@@ -7,7 +7,6 @@ urlpatterns = [
     path('users/<int:pk>', UserRetrieveView.as_view()),
     path('users/<int:pk>/selling', UserSellingListView.as_view()),
     path('users/<int:pk>/sold', UserSoldListView.as_view()),
-
     path('reports', ReportListCreateView.as_view()),
     path('reports/<int:pk>', ReportRetrieveDestroyView.as_view()),
     path('notifications', NotificationListCreateView.as_view()),
