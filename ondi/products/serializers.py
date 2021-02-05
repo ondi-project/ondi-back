@@ -14,7 +14,18 @@ class ProductSerializer(serializers.ModelSerializer):
         if request:
             user = request.user
             try:
+                like = Like.objects.get(from_user=user, product=obj)
                 return True
             except Like.DoesNotExist:
                 return False
         return False
+
+    like_count = serializers.SerializerMethodField()
+    def get_like_count(self, obj):
+        return Like.objects.filter(product=obj).count()
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
+        read_only_fields = ['name']

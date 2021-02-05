@@ -2,6 +2,9 @@ from django.db import models
 from user.models import *
 from django.utils import timezone
 
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     price = models.IntegerField()
@@ -11,5 +14,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_seller')
     view_count = models.IntegerField(default=0)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='%(class)s_category')
+
     # live = BooleanField()
     # like_count
