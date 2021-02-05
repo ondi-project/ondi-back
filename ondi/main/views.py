@@ -109,3 +109,25 @@ def view_product(request):
             user_id =2
         ####################
         return ProductView.as_view()(request, product_id,user_id)
+    if request.method == "POST":
+        print('POST')
+        # 라이브여부! -->	
+        live = request.POST.get('p_live', None)  # 없으면 OFF #신청하면 READY #해당시각이면 ON	
+        # 라이브 방송한다고하면!!!	
+        if live == 'READY':
+            product_id = request.POST.get('p_id', None)  # 상품정보	
+            live_time = request.POST.get('l_date', None)  # 라이브시간	
+            live_price = request.POST.get('l_sprice', None)  # 라이브시작 가격	
+            # 해당 Product에 p_live 변수 업데이트 & LiveProduct DB 생성	
+            # p_live 변수 변경	
+            product = Product.objects.get(id=product_id)
+            product.p_live = live  # live "None" --->"Ready"로 수정	
+            product.save()
+            # LiveProduct DB 생성	
+            liveposter = LiveProduct(l_date=live_time, l_product=product, l_sprice=live_price)
+            liveposter.save()
+            print("POST 데이터를 정상적으로 입력받았습니다")
+            return HttpResponse(simplejson.dumps({"response": "Good"}))
+        else:
+            print("POST 데이터를 찾을 수 없습니다")
+            return HttpResponse(simplejson.dumps({"response": "Fail"}))
