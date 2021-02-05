@@ -15,10 +15,11 @@ class Score(models.Model):
   to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_to_user')
   score = models.IntegerField(
     validators=[
-      MaxValueValidator(100),
-      MinValueValidator(1)
+      MaxValueValidator(5),
+      MinValueValidator(0)
     ]
   )
+  comment = models.TextField()
 
 class Report(models.Model):
   class Meta:

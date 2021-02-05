@@ -51,3 +51,15 @@ class ReportSerializer(serializers.ModelSerializer):
             'content',
         ]
         read_only_fields = ['from_user',]
+
+class ScoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Score 
+        fields = [
+            'id',
+            'from_user',
+            'to_user',
+            'score',
+            'comment',
+        ]
+        read_only_fields = ['from_user',]

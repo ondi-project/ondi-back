@@ -18,6 +18,16 @@ class ReportRetrieveDestroyView(generics.RetrieveDestroyAPIView):
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
 
+class ScoreListCreateView(generics.ListCreateAPIView):
+    queryset = Score.objects.all()
+    serializer_class = ScoreSerializer
+    def perform_create(self, serializer):
+        serializer.save(from_user=self.request.user)
+
+class ScoreRetrieveDestroyView(generics.RetrieveDestroyAPIView):
+    queryset = Score.objects.all()
+    serializer_class = ScoreSerializer
+
 class NotificationListCreateView(generics.ListCreateAPIView):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
@@ -25,4 +35,5 @@ class NotificationListCreateView(generics.ListCreateAPIView):
 class NotificationRetrieveDestroyView(generics.RetrieveDestroyAPIView):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
+
 
