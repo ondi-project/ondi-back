@@ -29,6 +29,21 @@ def livelist(request):
     if request.method == "GET":
         return LiveListView.as_view()(request)
 
+#카테고리화면 :
+@method_decorator(csrf_exempt,name='dispatch')
+def category(request):
+    if request.method == "GET":
+        product_category = request.GET.get('p_category')
+        product_view_option= request.GET.get('view_option') #'p_keyword' 'p_likecount' 'p_viewcount' 'p_date'
+        #############삭제해야함###########3
+        if product_category ==None:
+            product_category='의류'
+        if product_view_option ==None:
+            product_view_option ='p_likecount'
+        ###############
+        # #카테고리정보를 받으면
+        return CategoryListView.as_view()(request,product_category,product_view_option)
+
 #상품등록화면 : {'p_category':--,'p_name',p_price,p_content,p_image,p_tag,p_nego,p_date,p_likecount,p_seller,p_live}
 @method_decorator(csrf_exempt,name='dispatch')
 def post(request):
