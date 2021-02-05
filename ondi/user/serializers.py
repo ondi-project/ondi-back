@@ -85,3 +85,7 @@ class LikeSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['from_user',]
 
+class PurchasedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Purchased
+        fields = '__all__'

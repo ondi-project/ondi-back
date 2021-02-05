@@ -46,8 +46,9 @@ class Like(models.Model):
     from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_from_user')
     product = models.ForeignKey('main.Product', on_delete=models.CASCADE, related_name='%(class)s_product')
 
-'''
 class Purchased(models.Model):
-    user
-    item
-'''
+    class Meta:
+        unique_together = ('from_user', 'product',)
+    from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_from_user')
+    product = models.ForeignKey('main.Product', on_delete=models.CASCADE, related_name='%(class)s_product')
+    price = models.IntegerField()
