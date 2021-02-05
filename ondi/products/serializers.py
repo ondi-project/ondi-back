@@ -14,7 +14,6 @@ class ProductSerializer(serializers.ModelSerializer):
         if request:
             user = request.user
             try:
-                print(Like.objects.get(from_user=user, product=obj))
                 return True
             except Like.DoesNotExist:
                 return False
