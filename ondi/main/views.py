@@ -1,6 +1,4 @@
 from django.shortcuts import render
-# from django.core.serializers import serialize
-# from django.core import serializers
 from rest_framework import generics,serializers
 from rest_framework.response import Response
 from .models import *
@@ -21,27 +19,20 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
 
-class NProductListView(APIView):
-		# MultiPartParser AND FormParser
-		# https://www.django-rest-framework.org/api-guide/parsers/#multipartparser
-		# "You will typically want to use both FormParser and MultiPartParser
-		# together in order to fully support HTML form data."
-		parser_classes = (MultiPartParser, FormParser)
-		def post(self, request, *args, **kwargs):
-				file_serializer = NProductListSerializer(data=request.data)
-				if file_serializer.is_valid():
-						file_serializer.save()
-						return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-				else:
-						return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 #Main화면 : 상품들 최신순으로 보여짐
-@method_decorator(csrf_exempt,name='dispatch')
-def main(request):
-    if request.method == "GET":
-        return ProductListView.as_view()(request)
+class ProductListCreateView(generics.ListCreateAPIView):
+    queryset = Product.objects.all().order_by('-p_date')
+    serializer_class = ProductSerializer
+    def perform_create(self, serializer):
+        serializer.save(seller=self.request.user)
+# @method_decorator(csrf_exempt,name='dispatch')
+# def main(request):
+#     if request.method == "GET":
+#         return ProductListView.as_view()(request)
+
 
 #LiveList화면 : Live들 최근예정순으로 보여짐
+
 @method_decorator(csrf_exempt,name='dispatch')
 def livelist(request):
     if request.method == "GET":
@@ -114,7 +105,7 @@ def view_product(request):
         user_id = request.GET.get('u_id')
         ##########없애줘야힘
         if product_id ==None:
-            product_id =3
+            product_id =6
             user_id =2
         ####################
         return ProductView.as_view()(request, product_id,user_id)
