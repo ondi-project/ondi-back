@@ -16,6 +16,6 @@ urlpatterns = [
     path('favorites/<int:pk>', FavoriteRetrieveDestroyView.as_view()),
     path('likes', LikeListCreateView.as_view()),
     path('likes/<int:pk>', LikeRetrieveDestroyView.as_view()),
-    path('purchased', PurchasedListCreateView.as_view()),
-    path('purchased/<int:pk>', PurchasedRetrieveDestroyView.as_view()),
+    path('sold', SoldListCreateView.as_view()),
+    path('sold/<int:pk>', SoldRetrieveDestroyView.as_view()),
 ]

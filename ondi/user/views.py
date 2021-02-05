@@ -72,12 +72,12 @@ class LikeRetrieveDestroyView(generics.RetrieveDestroyAPIView):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
 
-class PurchasedListCreateView(generics.ListCreateAPIView):
-    queryset = Purchased.objects.all()
-    serializer_class = PurchasedSerializer
+class SoldListCreateView(generics.ListCreateAPIView):
+    queryset = Sold.objects.all()
+    serializer_class = SoldSerializer
     def perform_create(self, serializer):
         serializer.save(from_user=self.request.user)
 
-class PurchasedRetrieveDestroyView(generics.RetrieveDestroyAPIView):
-    queryset = Purchased.objects.all()
-    serializer_class = PurchasedSerializer
+class SoldRetrieveDestroyView(generics.RetrieveDestroyAPIView):
+    queryset = Sold.objects.all()
+    serializer_class = SoldSerializer
