@@ -1,6 +1,6 @@
 from django.shortcuts import render
 # from django.core.serializers import serialize
-from django.core import serializers
+# from django.core import serializers
 from rest_framework import generics,serializers
 from rest_framework.response import Response
 from .models import *
@@ -16,6 +16,24 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers.json import DjangoJSONEncoder
 import json
+from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
+from rest_framework import status
+
+class NProductListView(APIView):
+		# MultiPartParser AND FormParser
+		# https://www.django-rest-framework.org/api-guide/parsers/#multipartparser
+		# "You will typically want to use both FormParser and MultiPartParser
+		# together in order to fully support HTML form data."
+		parser_classes = (MultiPartParser, FormParser)
+		def post(self, request, *args, **kwargs):
+				file_serializer = NProductListSerializer(data=request.data)
+				if file_serializer.is_valid():
+						file_serializer.save()
+						return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+				else:
+						return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #Main화면 : 상품들 최신순으로 보여짐
 @method_decorator(csrf_exempt,name='dispatch')
@@ -89,6 +107,86 @@ def post(request):
             return HttpResponse(simplejson.dumps({"response": "Fail"}))
 
 #상품상세조회화면 > 라이브등록
+# @method_decorator(csrf_exempt,name='dispatch')
+# def view_product(request):
+#     if request.method == "GET":
+#         # 특정상품보여주기!
+#         product_id = request.GET.get('p_id')
+#         user_id = request.GET.get('u_id')
+#         ##########없애줘야힘
+#         if product_id ==None:
+#             product_id =3
+#             user_id =2
+#         ####################
+#         #조회수올리기
+#         product = Product.objects.get(id=product_id)
+#         before_value = product.p_viewcount
+#         after =(int(before_value) + 1)
+#         product.p_viewcount = (after)
+#         product.save()
+#         # Like여부확인
+#         user = User.objects.get(id=user_id)
+#         print(user_id)
+#         try: 
+#             like = Like.objects.filter(from_user=user, product=product)
+#             if like:
+#                 like = True
+#         except:
+#             like = False
+#         #상품보내주기
+#         final_product = Product.objects.filter(id=product_id)
+#         a = {'product': {
+#             "id": final_product[0].id,
+#             "p_category": final_product[0].p_category,
+#             "p_name": final_product[0].p_name,
+#             "p_price": final_product[0].p_price,
+#             "p_content": final_product[0].p_content,
+#             "p_image":final_product[0].p_image ,
+#             "p_tag": final_product[0].p_tag,
+#             "p_nego": final_product[0].p_nego,
+#             "p_date": final_product[0].p_date,
+#             "p_likecount": final_product[0].p_likecount,
+#             "p_live": final_product[0].p_live,
+#             "p_viewcount": final_product[0].p_viewcount,
+#             "p_seller": {
+#                 "id": final_product[0].p_seller.id
+#             }
+#         }}
+#         # a={'product':final_product[0], 'like':like} #해당 user가 좋아요하면 True, 아니면 False
+# 
+#         # 라이브버튼 띄는 여부
+#         if user_id ==  final_product[0].p_seller.id:
+#             a['livebutton'] = True
+#         else:
+#             a['livebutton'] =False
+#     #확인되야함!! json으로 잘갔는지!!
+#         print(type(a))
+#         print(a)
+#         return HttpResponse(simplejson.dumps(a))
+# 
+#     if request.method == "POST":
+#         print('POST')
+#         #라이브여부! -->
+#         live=request.POST.get('p_live',None)  #없으면 OFF #신청하면 READY #해당시각이면 ON
+#         #라이브 방송한다고하면!!!
+#         if live =='READY':
+#             product_id = request.POST.get('p_id',None) #상품정보
+#             live_time = request.POST.get('l_date',None) #라이브시간
+#             live_price = request.POST.get('l_sprice',None) #라이브시작 가격
+#             #해당 Product에 p_live 변수 업데이트 & LiveProduct DB 생성
+#             #p_live 변수 변경
+#             product = Product.objects.get(id=product_id)
+#             product.p_live= live #live "None" --->"Ready"로 수정
+#             product.save()
+#             #LiveProduct DB 생성
+#             liveposter = LiveProduct(l_date =live_time, l_product = product,l_sprice = live_price)
+#             liveposter.save()
+#             print("POST 데이터를 정상적으로 입력받았습니다")
+#             return HttpResponse(simplejson.dumps({"response": "Good"}))
+#         else:
+#             print("POST 데이터를 찾을 수 없습니다")
+#             return HttpResponse(simplejson.dumps({"response": "Fail"}))
+
 @method_decorator(csrf_exempt,name='dispatch')
 def view_product(request):
     if request.method == "GET":
@@ -100,51 +198,4 @@ def view_product(request):
             product_id =3
             user_id =2
         ####################
-        #조회수올리기
-        product = Product.objects.get(id=product_id)
-        before_value = product.p_viewcount
-        after =(int(before_value) + 1)
-        product.p_viewcount = (after)
-        product.save()
-        # Like여부확인
-        user = User.objects.get(id=user_id)
-        print(user_id)
-        try: 
-            like = Like.objects.filter(from_user=user, product=product)
-            if like:
-                like = True
-        except:
-            like = False
-        #상품보내주기
-        final_product = Product.objects.filter(id=product_id)
-        a={'product':final_product[0], 'like':like} #해당 user가 좋아요하면 True, 아니면 False
-        # 라이브버튼 띄는 여부
-        if user_id ==  a['product'].p_seller.id:
-            a['livebutton'] = True
-        else:
-            a['livebutton'] =False
-    #확인되야함!! json으로 잘갔는지!!
-        return HttpResponse(a)
-
-    if request.method == "POST":
-        print('POST')
-        #라이브여부! -->
-        live=request.POST.get('p_live',None)  #없으면 OFF #신청하면 READY #해당시각이면 ON
-        #라이브 방송한다고하면!!!
-        if live =='READY':
-            product_id = request.POST.get('p_id',None) #상품정보
-            live_time = request.POST.get('l_date',None) #라이브시간
-            live_price = request.POST.get('l_sprice',None) #라이브시작 가격
-            #해당 Product에 p_live 변수 업데이트 & LiveProduct DB 생성
-            #p_live 변수 변경
-            product = Product.objects.get(id=product_id)
-            product.p_live= live #live "None" --->"Ready"로 수정
-            product.save()
-            #LiveProduct DB 생성
-            liveposter = LiveProduct(l_date =live_time, l_product = product,l_sprice = live_price)
-            liveposter.save()
-            print("POST 데이터를 정상적으로 입력받았습니다")
-            return HttpResponse(simplejson.dumps({"response": "Good"}))
-        else:
-            print("POST 데이터를 찾을 수 없습니다")
-            return HttpResponse(simplejson.dumps({"response": "Fail"}))
+        return ProductView.as_view()(request, product_id,user_id)

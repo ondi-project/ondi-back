@@ -163,4 +163,5 @@ REST_FRAMEWORK = {
 REST_USE_JWT = True
 
 JWT_AUTH_COOKIE = 'ondi-auth'
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")

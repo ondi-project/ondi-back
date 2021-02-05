@@ -46,6 +46,7 @@ class Like(models.Model):
     from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='%(class)s_from_user')
     product = models.ForeignKey('main.Product', on_delete=models.CASCADE, related_name='%(class)s_product')
 
+#구매
 class Sold(models.Model):
     class Meta:
         unique_together = ('from_user', 'product',)

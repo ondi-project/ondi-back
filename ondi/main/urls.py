@@ -1,8 +1,9 @@
 from django.urls import path
-
+from .views import *
 from . import views
 
 urlpatterns = [
+    path('upload', NProductListView.as_view(), name='upload'),
     path('', views.main, name='main'),
     path('livelist',views.livelist, name='livelist'),
     path('post', views.post, name='post'),
